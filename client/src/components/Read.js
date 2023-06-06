@@ -3,16 +3,24 @@ import { Button } from "react-bootstrap"
 import Table from 'react-bootstrap/Table';
 import FormModal from "./FormModal"
 import axios from 'axios'
+import EditForm from './EditForm'
 function Read(){
    
     const[userList, setUserList] = useState([])
-
+    
     useEffect(()=>{
       axios.get('http://localhost:3001/read').then((response)=>{
         setUserList(response.data)
       })
     }, [])
 
+    const deleteUser = (id) =>{
+      axios.delete(`http://localhost:3001/delete/${id}`)
+      window.location.reload(true)
+    }
+    
+    
+    
     return(
         <>        
         <div className="myTable">
@@ -20,6 +28,7 @@ function Read(){
         <Table striped bordered hover>
       <thead>
         <tr>
+          <th>ID</th>
           <th>Fullname</th>
           <th>Age</th>
           <th>Email</th>
@@ -30,11 +39,12 @@ function Read(){
       <tbody>
         {userList.map((data,key)=>{
           return <tr>
+              <td>{data._id}</td>
               <td>{data.fullName}</td>
               <td>{data.age}</td>
               <td>{data.email}</td>
               <td>{data.status}</td>
-              <td><Button variant="warning">Edit</Button> <Button variant="danger">Delete</Button></td>
+              <td><EditForm id={data._id}/> <Button variant="danger" onClick={()=>deleteUser(data._id)}>Delete</Button></td>
             </tr>
         })}
       </tbody>

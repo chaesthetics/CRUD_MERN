@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from "react";
+import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -8,8 +9,10 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useEffect } from 'react';
 import axios from 'axios'
 
-function FormModal(props) {
-  const [show, setShow] = useState(false);
+
+function EditForm(props){
+
+    const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false)
     
@@ -22,27 +25,25 @@ function FormModal(props) {
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState("")
 
-  const addToList = () =>{
-    axios.post('http://localhost:3001/insert',{
-      fullname: fullname,
-      age: age,
-      email: email,
-      status: status,
-    })
-    window.location.reload(true)
-  }
-  
-  return (
-    <>
-    <Button variant="success" onClick={handleShow} className='userHandler'>Add User</Button>  
+  const [userInfo, setUserInfo] = useState([])
+  var id=props.id
+//   axios.get(`http://localhost:3001/read1/${id}`).then((response)=>{
+//     setUserInfo(response.data)
+//   })
+
+  console.log(id)
+
+    return(
+        <>
+            <Button variant="warning" onClick={handleShow} className='userHandler'>Edit User</Button>  
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add User</Modal.Title>
+          <Modal.Title>Edit Information</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Fullname</Form.Label>
+              <Form.Label>Fullname{props.id}</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Fullname"
@@ -83,13 +84,13 @@ function FormModal(props) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={addToList}>
-            Add User
+          <Button variant="primary">
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
-  );
+        </>
+    )
 }
 
-export default FormModal
+export default EditForm

@@ -34,6 +34,24 @@ app.get('/read', async (req, res)=>{
     userModel.find({}).then((result)=>res.send(result))
 })
 
-app.listen(PORT, ()=>{
-    console.log(`Server is listening to port ${PORT}`)
+// app.get('/read1/:id', async (req, res)=>{
+//     const id = req.params.id
+//     await userModel.find({$where: {_id: "647f23251c4ab968892bf94c"}}).then((result)=>res.send(result))
+// })
+
+app.delete('/delete/:id', async (req, res)=>{
+    const id = req.params.id;
+    await userModel.findByIdAndRemove(id).exec();
+    res.send('deleted');
 })
+
+app.delete('/delete1/:id', async (req, res)=>{
+    const id = req.params.id;
+    await userModel.findByIdAndRemove(id).exec();
+    res.send('deleted');
+})
+
+app.listen(PORT, ()=>{
+    console.log(`Server is running in port ${PORT}`)
+})
+
