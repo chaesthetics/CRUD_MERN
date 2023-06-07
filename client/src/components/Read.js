@@ -19,7 +19,9 @@ function Read(){
       window.location.reload(true)
     }
     
-    
+    const editHandler = (id) =>{
+      console.log(id)
+    }
     
     return(
         <>        
@@ -44,7 +46,7 @@ function Read(){
               <td>{data.age}</td>
               <td>{data.email}</td>
               <td>{data.status}</td>
-              <td><EditForm id={data._id}/> <Button variant="danger" onClick={()=>deleteUser(data._id)}>Delete</Button></td>
+              <td><EditForm id={data._id} fullname={data.fullName} age={data.age} email={data.email} status={data.status} onClick={()=>editHandler(data._id)}/> <Button variant="danger" onClick={()=>deleteUser(data._id)}>Delete</Button></td>
             </tr>
         })}
       </tbody>

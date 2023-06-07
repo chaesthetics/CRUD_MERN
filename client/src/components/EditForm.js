@@ -3,52 +3,103 @@ import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { useEffect } from 'react';
 import axios from 'axios'
-
 
 function EditForm(props){
 
     const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false)
-    
   };
   const handleShow = () => setShow(true);
- 
   
   const [fullname, setFullName] = useState("")
-  const [age, setAge] = useState("")
+  const [age, setAge] = useState(0)
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState("")
 
+  const [newFullname, setNewFullName] = useState("")
+  const [newAge, setNewAge] = useState(0)
+  const [newEmail, setNewEmail] = useState("")
+  const [newStatus, setNewStatus] = useState("")
+
   const [userInfo, setUserInfo] = useState([])
-  var id=props.id
-//   axios.get(`http://localhost:3001/read1/${id}`).then((response)=>{
-//     setUserInfo(response.data)
-//   })
+  var id = props.id
 
-  console.log(id)
+    axios.get(`http://localhost:3001/read1/${id}`).then((response)=>{
+      setUserInfo(response.data)
+      setFullName(userInfo.fullName)
+      setAge(userInfo.age)
+      setEmail(userInfo.email)
+      setStatus(userInfo.status)
+  })
 
+  const editHandler = () =>{
+    var fullnameIn
+    var ageIn
+    var emailIn
+    var statusIn
+
+    if(newFullname!=""){
+      fullnameIn = newFullname
+    }
+    else{
+      fullnameIn = fullname
+    }
+
+    if(newAge!=0){
+      ageIn = newAge
+    }
+    else{
+      ageIn = age
+    }
+
+    if(newEmail!=""){
+      emailIn = newEmail
+    }
+    else{
+      emailIn = email
+    }
+
+    if(newStatus!=""){
+      statusIn = newStatus
+    }
+    else{
+      statusIn = status
+    }
+
+    console.log(fullnameIn)
+    console.log(ageIn)
+    console.log(emailIn)
+    console.log(statusIn)
+
+    axios.put(`http://localhost:3001/edit/${id}`,{
+      fullname: fullnameIn,
+      age: ageIn,
+      email: emailIn,
+      status: statusIn,
+    })
+    window.location.reload(true)
+  } 
+  
     return(
         <>
-            <Button variant="warning" onClick={handleShow} className='userHandler'>Edit User</Button>  
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+          <Button variant="warning" onClick={handleShow} className='userHandler'>Edit User</Button>  
+          <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
           <Modal.Title>Edit Information</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+          </Modal.Header>
+          <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Fullname{props.id}</Form.Label>
+              <Form.Label>Fullname</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter Fullname"
                 autoFocus
-                onChange={event=>setFullName(event.target.value)}
+                defaultValue={fullname}
+                onChange={event=>setNewFullName(event.target.value)}
+                
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -57,7 +108,8 @@ function EditForm(props){
                 type="number"
                 placeholder="Enter age"
                 autoFocus
-                onChange={event=>setAge(event.target.value)}
+                defaultValue={age}
+                onChange={event=>setNewAge(event.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -66,7 +118,8 @@ function EditForm(props){
                 type="email"
                 placeholder="name@example.com"
                 autoFocus
-                onChange={event=>setEmail(event.target.value)}
+                defaultValue={email}
+                onChange={event=>setNewEmail(event.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -75,7 +128,8 @@ function EditForm(props){
                 type="text"
                 placeholder="Status"
                 autoFocus
-                onChange={event=>setStatus(event.target.value)}
+                defaultValue={status}
+                onChange={event=>setNewStatus(event.target.value)}
               />
             </Form.Group>
           </Form>
@@ -84,7 +138,7 @@ function EditForm(props){
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">
+          <Button variant="primary" onClick={editHandler}>
             Save Changes
           </Button>
         </Modal.Footer>
