@@ -37,7 +37,7 @@ function FormModal(props) {
     <Button variant="success" onClick={handleShow} className='userHandler'>Add User</Button>  
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>User Information</Modal.Title>
+          <Modal.Title>Add User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -84,7 +84,7 @@ function FormModal(props) {
             Close
           </Button>
           <Button variant="primary" onClick={addToList}>
-            Save User Info
+            Add User
           </Button>
         </Modal.Footer>
       </Modal>

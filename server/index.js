@@ -30,10 +30,38 @@ app.post("/insert", async(req, res)=>{
     }
 })
 
+app.put('/edit/:id', async(req, res)=>{
+    const id = req.params.id
+    const fullname = req.body.fullname
+    const age = req.body.age
+    const email = req.body.email
+    const status = req.body.status
+
+    userModel.findByIdAndUpdate(id, {"fullName":`${fullname}`,"age": `${age}`, "email": `${email}`, "status":`${status}`}).exec()
+})
+
 app.get('/read', async (req, res)=>{
     userModel.find({}).then((result)=>res.send(result))
 })
 
-app.listen(PORT, ()=>{
-    console.log(`Server is listening to port ${PORT}`)
+app.get('/read1/:id', async (req, res)=>{
+    const id = req.params.id
+    userModel.findById(id).then((result)=>res.send(result))
 })
+
+app.delete('/delete/:id', async (req, res)=>{
+    const id = req.params.id;
+    userModel.findByIdAndRemove(id).exec();
+    res.send('deleted');
+})
+
+app.delete('/delete1/:id', async (req, res)=>{
+    const id = req.params.id;
+    await userModel.findByIdAndRemove(id).exec();
+    res.send('deleted');
+})
+
+app.listen(PORT, ()=>{
+    console.log(`Server is running in port ${PORT}`)
+})
+
