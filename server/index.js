@@ -30,18 +30,28 @@ app.post("/insert", async(req, res)=>{
     }
 })
 
+app.put('/edit/:id', async(req, res)=>{
+    const id = req.params.id
+    const fullname = req.body.fullname
+    const age = req.body.age
+    const email = req.body.email
+    const status = req.body.status
+
+    userModel.findByIdAndUpdate(id, {"fullName":`${fullname}`,"age": `${age}`, "email": `${email}`, "status":`${status}`}).exec()
+})
+
 app.get('/read', async (req, res)=>{
     userModel.find({}).then((result)=>res.send(result))
 })
 
-// app.get('/read1/:id', async (req, res)=>{
-//     const id = req.params.id
-//     await userModel.find({$where: {_id: "647f23251c4ab968892bf94c"}}).then((result)=>res.send(result))
-// })
+app.get('/read1/:id', async (req, res)=>{
+    const id = req.params.id
+    userModel.findById(id).then((result)=>res.send(result))
+})
 
 app.delete('/delete/:id', async (req, res)=>{
     const id = req.params.id;
-    await userModel.findByIdAndRemove(id).exec();
+    userModel.findByIdAndRemove(id).exec();
     res.send('deleted');
 })
 
